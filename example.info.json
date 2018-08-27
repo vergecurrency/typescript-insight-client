@@ -1,0 +1,15 @@
+{
+  "info": {
+    "version": 120100,
+    "protocolversion": 70012,
+    "blocks": 538768,
+    "timeoffset": 0,
+    "connections": 49,
+    "proxy": "",
+    "difficulty": 6727225469722.534,
+    "testnet": false,
+    "relayfee": 0.00001,
+    "errors": "Warning: unknown new rules activated (versionbit 1)",
+    "network": "livenet"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "insight-client-tor",
+  "version": "0.0.1",
+  "description": "insight api client",
+  "main": "index.js",
+  "repository": "https://github.com/vergecurrency/insight-client-tor.git",
+  "author": "marpme <marvin.piekarek5@gmail.com>",
+  "license": "MIT"
+}
