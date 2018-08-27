@@ -7,7 +7,7 @@ import { TransactionSummary } from './TransactionSummary';
 import { Info } from './Info';
 
 /*API HTTP Endpoints*/
-export interface ICLient {
+export interface IClient {
   getBlock: (hash: number) => Block;
   getBlocks: (date: Date, limit: number) => BlockSummary;
   getBlockHashByIndex: (index: number) => number;
