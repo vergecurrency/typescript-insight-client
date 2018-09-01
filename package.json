@@ -5,5 +5,16 @@
   "main": "index.js",
   "repository": "https://github.com/vergecurrency/insight-client-tor.git",
   "author": "marpme <marvin.piekarek5@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "@types/node-fetch": "^2.1.2",
+    "node-fetch": "^2.2.0",
+    "socks-proxy-agent": "^4.0.1"
+  }
 }
