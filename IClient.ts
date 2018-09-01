@@ -14,7 +14,7 @@ export interface IClient
   /**
    * Broadcasts transaction and returns the transaction id
    */
-  postTransaction: (rawTransaction: number) => Promise<number>;
+  postTransaction: (rawTransaction: string) => Promise<number>;
 
   /**
    * All infos in one
