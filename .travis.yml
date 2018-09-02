@@ -1,0 +1,27 @@
+language: nodejs
+
+before_script:
+  - yarn
+  - yarn build
+
+script:
+  - yarn test
+
+after_success:
+  - npm pack
+
+deploy:
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    file_glob: true
+    file: 'typescript-insight-client-*.tgz'
+    skip_cleanup: true
+    on:
+      tags: true
+
+  - provider: npm
+    skip_cleanup: true
+    email: 'cryzar95@googlemail.com'
+    api_key: $NPM_TOKEN
+    on:
+      tags: true

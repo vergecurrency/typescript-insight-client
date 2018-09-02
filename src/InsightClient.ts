@@ -7,64 +7,111 @@ import { BlockSummary } from './BlockSummary';
 import { AddressSummary } from './AddressSummary';
 import { UnspentOutput } from './UnspentOutput';
 import fetch from 'node-fetch';
-import SocksProxyAgent from 'socks-proxy-agent';
+import wrappedFetch from 'socks5-node-fetch';
+import { LastBlockIdentity } from './LastBlockIdentity';
 
 export class InsightClient /*implements IClient*/ {
   private url: string;
-  private proxy?: string;
+  private socksFetch?: any;
 
-  constructor(url: string, socksProxyUrl?: string) {
+  constructor(url: string, socksHost?: string, socksPort?: string) {
     this.url = url;
-    this.proxy = socksProxyUrl;
+
+    if (socksHost && socksPort) {
+      this.socksFetch = wrappedFetch({
+        socksHost,
+        socksPort,
+      });
+    }
   }
 
   fetchRequest(url: string, options: object = {}): Promise<any> {
-    if (this.proxy) {
-      return fetch(url, { ...options }).then(res => res.json());
+    if (!this.socksFetch) {
+      return fetch(url, { ...options }).then(
+        (res: any) => res.ok && res.json()
+      );
     }
 
-    return fetch(url, {
+    return this.socksFetch(url, {
       ...options,
-      agent: new SocksProxyAgent(this.proxy),
-    }).then(res => res.json());
+    }).then((res: Response) => res.ok && res.json());
   }
 
-  /*postTransaction(rawTransaction: number): Promise<number> {
+  /*postTransaction(rawTransaction: string): Promise<number> {}*/
 
-  }*/
   getInfo(): Promise<Info> {
-    return this.fetchRequest(`${this.url}/status?q=getinfo`);
+    return this.fetchRequest(`${this.url}/status?q=getinfo`).then(
+      ({ info }) => info as Info
+    );
   }
-  /*getDifficulty: () => Promise<number>;
-  getBestBlockHash: () => Promise<number>;
-  getLastBlockHash: () => Promise<number>;
-  getTransaction: (id: number) => Promise<Transaction>;
-  getTransactionsByBlock: (blockhash: string) => Promise<Transaction[]>;
-  getTransactionsByAddress: (address: string) => Promise<Transaction[]>;
-  getTransactionsByMultipleAddresses: (
+
+  getDifficulty(): Promise<number> {
+    return this.fetchRequest(`${this.url}/status?q=getDifficulty`).then(
+      ({ difficulty }) => difficulty as number
+    );
+  }
+
+  getBestBlockHash(): Promise<string> {
+    return this.fetchRequest(`${this.url}/status?q=getBestBlockHash`).then(
+      ({ getBestBlockHash }) => getBestBlockHash as string
+    );
+  }
+
+  getLastBlockHash(): Promise<LastBlockIdentity> {
+    return this.fetchRequest(`${this.url}/status?q=getLastBlockHash`).then(
+      blockIdentity => blockIdentity as LastBlockIdentity
+    );
+  }
+
+  getTransaction(id: number): Promise<Transaction> {
+    return this.fetchRequest(`${this.url}/status?q=getLastBlockHash`).then(
+      blockIdentity => blockIdentity as LastBlockIdentity
+    );
+  }
+
+  /*getTransactionsByBlock(blockhash: string): Promise<Transaction[]> {}
+  getTransactionsByAddress(address: string): Promise<Transaction[]> {}
+  getTransactionsByMultipleAddresses(
     addresses: string[],
     from?: number | undefined,
     to?: number | undefined
-  ) => Promise<TransactionSummary>;
-  getBlock: (hash: number) => Promise<Block>;
-  getBlocks: (date: Date, limit: number) => Promise<BlockSummary>;
-  getBlockHashByIndex: (index: number) => Promise<number>;
-  getBlockByIndex: (index: number) => Promise<Block>;
-  getAddressDetails: (
+  ): Promise<TransactionSummary> {}*/
+
+  getBlock(hash: string): Promise<Block> {
+    return this.fetchRequest(
+      `${this.url}/block/${encodeURIComponent(hash)}`
+    ).then(block => block as Block);
+  }
+
+  //getBlocks(date: Date, limit: number): Promise<BlockSummary> {}
+
+  getBlockHashByIndex(index: number): Promise<string> {
+    return this.fetchRequest(`${this.url}/block-index/${index}`).then(
+      ({ blockhash }) => blockhash as string
+    );
+  }
+
+  getBlockByIndex(index: number): Promise<Block> {
+    return this.fetchRequest(`${this.url}/block-index/${index}`).then(
+      ({ blockhash }) => this.getBlock(blockhash)
+    );
+  }
+
+  /*getAddressDetails(
     address: string,
     showTransactions?: boolean | undefined,
     from?: number | undefined,
     to?: number | undefined
-  ) => Promise<AddressSummary>;
-  getBalance: (address: string) => Promise<number>;
-  getTotalReceived: (address: string) => Promise<number>;
-  getTotalSent: (address: string) => Promise<number>;
-  getUnconfirmedBalance: (address: string) => Promise<number>;
-  getUnspentOutputs: (address: string) => Promise<UnspentOutput[]>;
-  getUnspentOutputsFormMultipleAddresses: (
+  ): Promise<AddressSummary> {}
+  getBalance(address: string): Promise<number> {}
+  getTotalReceived(address: string): Promise<number> {}
+  getTotalSent(address: string): Promise<number> {}
+  getUnconfirmedBalance(address: string): Promise<number> {}
+  getUnspentOutputs(address: string): Promise<UnspentOutput[]> {}
+  getUnspentOutputsFormMultipleAddresses(
     addresses: string[]
-  ) => Promise<UnspentOutput[]>;
-  postUnspentOutputsFormMultipleAddresses: (
+  ): Promise<UnspentOutput[]> {}
+  postUnspentOutputsFormMultipleAddresses(
     addresses: string[]
-  ) => Promise<UnspentOutput[]>;*/
+  ): Promise<UnspentOutput[]> {}*/
 }

@@ -1,20 +1,42 @@
 {
-  "name": "insight-client-tor",
+  "name": "typescript-insight-client",
   "version": "0.0.1",
   "description": "insight api client",
-  "main": "index.js",
-  "repository": "https://github.com/vergecurrency/insight-client-tor.git",
+  "repository": "https://github.com/vergecurrency/typescript-insight-client.git",
   "author": "marpme <marvin.piekarek5@gmail.com>",
   "license": "MIT",
+  "main": "./dist/InsightClient.js",
+  "types": "./dist/InsightClient.d.js",
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest",
+    "clean": "shx rm -rf node_modules/ dist/ docs/"
   },
   "devDependencies": {
+    "@types/jest": "^23.3.1",
+    "jest": "^23.5.0",
+    "shx": "^0.3.2",
+    "ts-jest": "^23.1.4",
     "typescript": "^3.0.3"
   },
   "dependencies": {
     "@types/node-fetch": "^2.1.2",
     "node-fetch": "^2.2.0",
-    "socks-proxy-agent": "^4.0.1"
+    "socks-proxy-agent": "^4.0.1",
+    "socks5-node-fetch": "^0.0.4"
   }
 }

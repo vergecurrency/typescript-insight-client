@@ -1,0 +1,11 @@
+tsconfig.json
+.travis.yml
+.nojekyll
+docs/
+src/
+examples/
+.vscode/
+.npmignore
+
+// npm pack
+typescript-insight-client-*.tgz
