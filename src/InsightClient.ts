@@ -53,7 +53,7 @@ export class InsightClient /*implements IClient*/ {
 
   getBestBlockHash(): Promise<string> {
     return this.fetchRequest(`${this.url}/status?q=getBestBlockHash`).then(
-      ({ getBestBlockHash }) => getBestBlockHash as string
+      ({ bestblockhash }) => bestblockhash as string
     );
   }
 
