@@ -1,6 +1,6 @@
 {
   "name": "typescript-insight-client",
-  "version": "0.0.1",
+  "version": "0.0.1-beta",
   "description": "insight api client",
   "repository": "https://github.com/vergecurrency/typescript-insight-client.git",
   "author": "marpme <marvin.piekarek5@gmail.com>",
