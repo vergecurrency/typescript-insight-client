@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@types/node-fetch": "^2.1.2",
+    "mem": "^4.3.0",
     "node-fetch": "^2.2.0",
     "socks-proxy-agent": "^4.0.1",
     "socks5-node-fetch": "^0.0.4"
